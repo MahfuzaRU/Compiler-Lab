@@ -1,0 +1,234 @@
+Example-1
+
+#include<bits/stdc++.h>
+using namespace std;
+
+//character check
+bool is_letter(char c)
+{
+    if(c>='a' && c<='z' || c>= 'A' && c<='Z')
+        return true;
+    return false;
+}
+//digit check
+bool is_digit(char c)
+{
+    if(c>='0' && c<='9')
+        return true;
+    return false;
+}
+//special character check
+bool is_special_char(char c)
+{
+    string special_characters =".,;:-";
+    for(int i=0; i<special_characters.length(); i++)
+    {
+        if(c==special_characters[i])
+            return true;
+
+    }
+    return false;
+
+
+}
+
+
+int main()
+{
+    string s;
+    getline(cin, s);
+    vector<char> letter, digit, other;
+    int n=s.length();
+    int words=0, letters=0, digits=0, others=0;
+
+    for(int i=0; i<n; i++)
+    {
+        if(i < n-1 and s[i]==' ' and s[i+1] != ' ')
+
+        {
+            words++;
+        }
+        if(is_letter(s[i]))
+        {
+            letters++;
+            letter.push_back(s[i]);
+        }
+        else if(is_digit(s[i]))
+        {
+            digits++;
+            digit.push_back(s[i]);
+        }
+        else if(is_special_char(s[i]))
+        {
+            others++;
+            other.push_back(s[i]);
+        }
+    }
+    words++;
+
+    cout<<"No of Words : "<<words <<endl;
+    cout<<"No of Letters : "<<letters <<endl;
+    cout<<"No of Digits : "<<digits <<endl;
+    cout<<"No of Others : "<<others <<endl;
+
+    for(int i=0; i < letter.size(); i++)
+    {
+        cout<<letter[i] ;
+        if(i== letter.size() -1)
+        {
+            cout<<endl;
+        }
+        else
+            cout<<", ";
+    }
+
+    for(int i=0; i<digit.size(); i++)
+    {
+        cout << digit[i];
+        if(i== digit.size() -1)
+        {
+            cout<<endl;
+        }
+        else
+            cout<<", ";
+    }
+
+    for(int i=0; i<other.size(); i++)
+    {
+        cout <<'\'' << other[i] << '\'';
+        if(i== other.size() -1)
+        {
+            cout<<endl;
+        }
+        else
+            cout<<", ";
+    }
+
+    return 0;
+
+}
+
+/*
+Md. Tareq Zaman, Part-3, 2011
+No of words: 5
+No of letters: 16
+NO of digits: 5
+No of other characters: 4
+M, d, T, a, r, e, q, Z, a, m, a, n, P, a, r, t
+3, 2, 0, 1, 1
+'.', ',', '-', ','
+*/
+
+
+
+Example-2
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to check if a character is a vowel
+bool is_vowel(char ch) {
+    ch = tolower(ch);
+    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+}
+
+int main() {
+    string str = "Munmun is the student of Computer Science & Engineering";
+
+    int no_vowel = 0, no_consonant = 0;
+    set<char> vowels, consonants;
+
+    for (char ch : str) {
+        if (isalpha(ch)) { // Check if the character is a letter
+            if (is_vowel(ch)) {
+                no_vowel++;
+                vowels.insert(tolower(ch)); // Store vowels in lowercase
+            } else {
+                no_consonant++;
+                consonants.insert(tolower(ch)); // Store consonants in lowercase
+            }
+        }
+    }
+
+    // Output results
+    cout << "Number of Vowels: " << no_vowel << endl;
+    cout << "Number of Consonants: " << no_consonant << endl;
+
+    cout << "Existing Vowels: ";
+    for (char vowel : vowels) {
+        cout << vowel << " ";
+    }
+    cout << endl;
+
+    cout << "Existing Consonants: ";
+    for (char consonant : consonants) {
+        cout << consonant << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+
+
+
+/*
+#include <bits/stdc++.h>
+using namespace std;
+bool is_vowel(char ch)
+{
+    if(ch=='a' || ch=='e' || ch=='i' || ch=='o' || ch=='u' || ch=='A' || ch=='E' || ch=='I' || ch=='O' || ch=='U')
+    {
+        return true;
+    }
+    return false;
+}
+int main()
+{
+    string str = "Munmun is the student of Computer Science & Engineering";
+
+    int n=str.size();
+
+    int no_vowel =0, no_consonant =0;
+
+    set<char> vowels, consonants;
+
+    for(int i=0; i<n; i++)
+    {
+        if(i+1 <n && (str[i]==' ' && str[i+1]==' '))
+            continue;
+        if(is_vowel(str[i]))
+        {
+            no_vowel +=1;
+            vowels.insert(str[i]);
+        }
+        else if((str[i]>='a' && str[i]<='z' || str[i]>='A' && str[i]<='Z'))
+        {
+            no_consonant +=1;
+            consonants.insert(str[i]);
+        }
+    }
+
+    cout<<"No of Vowels : "<<no_vowel <<endl;
+    cout<<"No of Consonant : "<<no_consonant <<endl;
+
+    cout <<"Exsisted vowels are : ";
+    //nested loop for showing vowel, consonant letter
+    for(auto i : vowels)
+    {
+        cout<< i <<" ";
+    }
+    cout<<endl;
+
+    cout <<"Exsisted Consonants are : ";
+    for(auto i : consonants)
+    {
+        cout<< i <<" ";
+    }
+    cout<<endl;
+
+    return 0;
+
+}
+*/
+

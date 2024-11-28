@@ -1,0 +1,110 @@
+question -4
+/*
+Build a lexical analyzer implementing the following regular expressions:
+Integer variable = (i-nI-N)(a-zA-Z0-9)*
+ShortInt Number = (1-9)|(1-9)(0-9)|(1-9)(0-9)(0-9)|(1-9)(0-9)(0-9)(0-9)
+LongInt Number = (1-9)(0-9)(0-9)(0-9)(0-9)+
+Invalid Input or Undefined = Otherwise
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+bool isIntVariable(string s){
+
+    if(tolower(s[0] < 'i') || tolower(s[0] > 'n')){
+        return false;
+    }
+
+    for(int i = 1;s[i]!='\0';i++){
+        if(!isalnum(s[i])){
+            return false;
+        }
+    }
+    return true;
+
+}
+
+bool isShortNum(string s){
+    if(s.length() > 4) {
+        return false;
+    }
+
+    if(!(s[0] >= '1' && s[0] <= '9'))
+    {
+        return false;
+    }
+    for(int i = 1;s[i]!='\0';i++){
+        if(!isdigit(s[i]))
+            return false;
+    }
+    return true;
+}
+
+bool isLongNum(string s){
+    if(s.length() < 5) {
+        return false;
+    }
+
+
+    if(!(s[0] >= '1' && s[0] <= '9'))
+    {
+        return false;
+    }
+    for(int i = 1;s[i]!='\0';i++){
+        if(!isdigit(s[i]))
+            return false;
+    }
+    return true;
+}
+
+int main(){
+    freopen("4.txt", "r", stdin);
+
+    string s;
+    while(getline(cin, s)){
+        if(isIntVariable(s)){
+            cout << s << " : integer variable" << endl;
+        }
+        else if(isShortNum(s)){
+            cout << s << " : short number" << endl;
+        }
+        else if(isLongNum(s)){
+            cout << s << " : long number" << endl;
+        }
+        else{
+            cout << s << " : invalid" << endl;
+        }
+    }
+
+    return 0;
+}
+
+
+//sample input : output
+
+int : integer variable
+jnt : integer variable
+null : integer variable
+flag : invalid
+2 : short number
+32 : short number
+345 : short number
+04 : invalid
+4567 : short number
+012334 : invalid
+12345 : long number
+t5y : invalid
+m : integer variable
+cd : invalid
+m4s : integer variable
+c : invalid
+a : invalid
+d : invalid
+b : invalid
+i : integer variable
+l : integer variable
+
+
+

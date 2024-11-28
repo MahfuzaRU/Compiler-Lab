@@ -230,5 +230,55 @@ int main()
     return 0;
 
 }
+
+
+
+example-3
+
+
+
 */
 
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    string s;
+    getline(cin, s);
+//cin>>s;
+
+    string cse = "Computer Science & Engineering";
+    string year[] = {"1st", "2nd", "3rd", "4th"};
+    string  semester[] = {"1st", "2nd"};
+    string course[] = {"Engineering Ethics", "Communication Engineering", "Software Engineering", "Compiler Design"};
+    string title[] = {"Theory", "Lab"};
+
+    if(s[0]=='C' && s[1]=='S' && s[2]=='E'){
+            cout<<cse <<", ";
+            cout << year[int(s[4]-'0')-1] << "year, ";
+            cout << semester[int(s[5]-'0')-1] << "semester, ";
+             cout << course[int(s[6]-'0')-1] << ", ";
+              cout << title[int(s[7]-'0')-1] << endl;
+        }
+
+}
+
+
+example-4
+
+
+int: Integer Variable
+jnt: Integer Variable
+null: Integer Variable
+flag: Invalid output
+2: Short Integer
+32: Short Integer
+345: Short Integer
+04: Invalid output
+4567: Short Integer
+012334: Invalid output
+12345: Long Integer
+t5y: Invalid output
+m5555: Integer Variable
+kh58y: Integer Variable

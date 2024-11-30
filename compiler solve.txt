@@ -107,4 +107,612 @@ i : integer variable
 l : integer variable
 
 
+question 5
+/*
+Build a lexical analyzer implementing the following regular expressions:
+Float variable = (a-hA-Ho-zO-Z)(a-zA-Z0-9)*
+Float Number = 0.(0-9)(0-9)|(1-9)(0-9)*.(0-9)(0-9)
+Double Number = 0.(0-9)(0-9)(0-9)+|(1-9)(0-9)*.(0-9)(0-9)(0-9)+
+Invalid Input or Undefined = Otherwise
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+bool Float_val(string s)
+{
+    if (!(tolower(s[0] >= 'a' && s[0] <= 'h') || tolower(s[0] >= 'o' && s[0] <= 'z')))
+        return false;
+
+    for (int i = 1; s[i] != '\0'; i++)
+    {
+        if (!(tolower(s[i] >= 'a' && s[i] <= 'z') || (s[i] >= '0' && s[i] <= '9')))
+            return false;
+    }
+    return true;
+}
+
+int FloatOrDouble(string s)
+{
+    int cnt = 0;
+    for (auto ch : s)
+    {
+        if (ch == '.')
+            cnt++;
+        else if (!isdigit(ch))
+            return false;
+    }
+    if (cnt > 1 || cnt == 0)
+        return false;
+    cnt = 0;
+    if (s[0] == '0' && s[1] != '.')
+        return false;
+    for (int i = s.size() - 1; i >= 0; i--)
+    {
+        if (s[i] == '.')
+        {
+            break;
+        }
+        else
+            cnt++;
+    }
+    return cnt;
+}
+
+int main()
+{
+    freopen("5.txt", "r", stdin);
+    string str;
+    while (getline(cin, str))
+    {
+        string str;
+        cin >> str;
+        if (Float_val(str))
+            cout <<str<< " : Float Value" << endl;
+
+        else if (FloatOrDouble(str) == 2)
+            cout <<str<< " : Float Number" << endl;
+        else if (FloatOrDouble(str) > 2)
+            cout <<str<< " : Double Number" << endl;
+
+        else
+            cout <<str<< " : Undefined" << endl;
+    }
+
+    return 0;
+}
+
+
+//sample input : output
+a1b2c3 : Float Value
+0.12 : Float Number
+123.45 : Float Number
+0.123 : Double Number
+456.789 : Double Number
+1i2 : Undefined
+9.9 : Undefined
+0.1 : Undefined
+hello12 : Float Value
+0.1234 : Double Number
+x : Float Value
+1.23.45 : Undefined
+i12 : Undefined
+
+
+
+question- 6
+
+/*
+Build a lexical analyzer implementing the following regular expressions:
+Character variable =ch_(a-zA-Z0-9)(a-zA-Z0-9)*
+Binary variable = bn_(a-zA-Z0-9)(a-zA-Z0-9)*
+Binary Number = 0(0|1)(0|1)*
+Invalid Input or Undefined = Otherwise
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+bool character_var(string s)
+{
+    if(!(s[0]=='c' && s[1]=='h' && s[2]=='_'))
+        return false;
+
+    if(!(tolower(s[3]>='a' && s[3]<='z') || (s[3]>='0' && s[3]<='9')))
+        return false;
+
+    for(int i=4; s[i]='\0'; i++)
+    {
+        if(!(tolower(s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')))
+            return false;
+    }
+    return true;
+}
+bool binary_var(string s)
+{
+    if(!(s[0]=='b' && s[1]=='n' && s[2]=='_'))
+        return false;
+
+    if(!(tolower(s[3]>='a' && s[3]<='z') || (s[3]>='0' && s[3]<='9')))
+        return false;
+
+    for(int i=4; s[i]='\0'; i++)
+    {
+        if(!(tolower(s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')))
+            return false;
+    }
+    return true;
+}
+bool binary_num(string s)
+{
+    if(!(s[0]=='0'))
+        return false;
+    if(!(s[1]=='0' || s[1]=='1'))
+        return false;
+    for(int i=2; s[i]!='\0'; i++)
+    {
+        if(!(s[i]=='0' || s[i]=='1'))
+            return false;
+    }
+    return true;
+}
+
+int main()
+{
+    freopen("6.txt", "r", stdin);
+    string s;
+    while(getline(cin, s))
+    {
+        if(character_var(s))
+        {
+            cout<<s<<" : Character Variable" <<endl;
+        }
+        else if(binary_var(s))
+        {
+            cout<<s<<" : Binary Variable"<<endl;
+        }
+        else if(binary_num(s))
+        {
+            cout<<s<<" : Binary Number"<<endl;
+        }
+        else
+        {
+            cout<<s<<" : Invalid Input"<<endl;
+        }
+    }
+    return 0;
+}
+//sample input : output
+
+ch_a123 : Character Variable
+ch_9xy : Character Variable
+bn_abc : Binary Variable
+bn_101 : Binary Variable
+0 : Undefind
+0a : Undefind
+0 : Undefind
+
+
+question- 7
+
+/*
+Write a program to recognize C++
+ i) Keyword ii) Identifier iii) Operator iv) Constant
+*/
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+bool keywords_check(string s)
+{
+    vector<string> keywors = {
+        "true", "false", "else", "if", "for", "int", "bool", "float",
+        "double", "string", "void", "long", "class", "and", "or", "xor",
+        "char", "while"
+    };
+    for(int i=0; i<keywors.size(); i++)
+    {
+        if(keywors[i].compare(s)==0)
+        return true;
+    }
+    return false;
+
+}
+
+bool operator_check(string s)
+{
+    vector<string>operators={
+        "+", "-", "*", "/", "%",                                           // Arithmetic Operators
+        "==", "!=", "<", ">", "<=", ">=",                                  // Relational Operators
+        "&&", "||", "!",                                                   // Logical Operators
+        "&", "|", "^", "~", "<<", ">>",                                    // Bitwise Operators
+        "=", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "<<=", ">>=", // Assignment Operators
+        "++", "--",                                                        // Increment and Decrement Operators
+        "?", ":",                                                          // Conditional Operator
+        ",",                                                               // Comma Operator
+        ".", "->",                                                         // Member Access Operators
+        "::"
+            };
+    for(int i=0; i<operators.size(); i++)
+    {
+        if(operators[i].compare(s)==0)
+            return true;
+    }
+    return false;
+
+}
+bool identifire_check(string s)
+{
+    if(isdigit(s[0])) return false;
+    for(char ch : s)
+    {
+        if(ch !='_' && !isalnum(ch)) return false;
+    }
+    return true;
+}
+
+bool string_constant_check(string s)
+{
+    char ch='"';
+    if(s[0]==ch && s[s.size()-1]==ch)
+    {
+        return true;
+    }
+}
+
+bool constant_check(string s)
+{
+    int cn=0;
+    for(char ch : s)
+    {
+        if(ch=='.')
+            cn++;
+    }
+    if(cn>1) return false;
+
+    for(int i=0; s[i]; i++)
+    {
+        if(isdigit(s[i]) || s[i]=='.')
+        {
+            continue;
+        }else
+        return false;
+    }return true;
+}
+
+int main()
+{
+    freopen("7.txt", "r", stdin);
+    string s;
+    while(getline(cin, s))
+    {
+        if(keywords_check(s))
+            cout<<s<<" : keyword"<<endl;
+        else if(operator_check(s))
+            cout<<s<<" : operator"<<endl;
+        else if(identifire_check(s))
+            cout<<s<<" : identifier"<<endl;
+        else if(string_constant_check(s))
+            cout<<s<<" : string constant"<<endl;
+        else if(constant_check(s))
+            cout<<s<<" : constant"<<endl;
+        else
+            cout<<s<<" : invalid"<<endl;
+    }
+    return 0;
+}
+
+
+//sample input : output
+int : keyword
+main : identifier
+= : operator
+123 : constant
+3.14 : constant
++ : operator
+while : keyword
+_tempVar : identifier
+1main : invalid
+void : keyword
+
+
+question-7&8
+/*
+i) Keyword ii) Identifier iii) Operator iv) Constant
+Write a program which converts a word of C++ program to its equivalent token.
+RESULT:
+Input: 646.45
+Output: Float
+Input: do
+Output: Keyword
+Input: 554
+Output: Integer
+Input: abc
+Output: Identifier
+Input: +
+Output: Arithmetic Operator
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    vector<string> keyword = {
+        "true", "false",
+        "if", "for","do","while","else","switch", "case",
+        "void", "typeptr", "delete", "or","and", "xor",
+        "class", "const", "namespace","int", "double", "float","double",
+        "unsigned"
+    };
+
+    vector<string> Arithmetic_operator = {"+", "-", "*", "/","%"};
+    vector<string> Logical_operator = {"&&", "||", "!"};
+    vector<string> Relational_operator = {"==", ">=", "<=", "!="};
+    vector<string> Bitwise_operator = {"^", "|","&","<<",">>"};
+    vector<string> Incremental_operator = {"++","--"};
+    vector<string> Assignmental_operator = {"+=","-=","*="};
+
+    string s;
+    while(getline(cin, s)){
+        if(find(keyword.begin(), keyword.end(),s) != keyword.end())
+            cout << s << " : " << "Keyword" << endl;
+        else if(find(Arithmetic_operator.begin(), Arithmetic_operator.end(),s) != Arithmetic_operator.end())
+            cout << s << " : arithmetic operator" << endl;
+        else if(find(Logical_operator.begin(), Logical_operator.end(),s) != Logical_operator.end())
+            cout << s << " : Logical operator" << endl;
+        else if(find(Relational_operator.begin(), Relational_operator.end(),s) != Relational_operator.end())
+            cout << s << " : relational operator" << endl;
+        else if(find(Bitwise_operator.begin(), Bitwise_operator.end(),s) != Bitwise_operator.end())
+            cout << s << " : bitwise operator" << endl;
+        else if(find(Incremental_operator.begin(), Incremental_operator.end(),s) != Incremental_operator.end())
+            cout << s << " : incremental operator" << endl;
+        else if(find(Assignmental_operator.begin(), Assignmental_operator.end(),s) != Assignmental_operator.end())
+            cout << s << " : assignmental operator" << endl;
+        else if(s[0] == '_' || isalpha(s[0])){
+            bool flag = true;
+
+            for(int i = 1;s[i] != '\0';i++){
+                if(!isalnum(s[i]) && s[i] != '_'){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag)
+                cout << s << " : Identifier" << endl;
+            else
+                cout << "Invalid" << endl;
+        }
+
+        else if(s[0] == '"' && s[s.length()-1] == '"')
+            cout << s << " : string leteral" << endl;
+        else if(isdigit(s[0]) || s[0] == '.'){
+            bool flag = true;
+            int cnt = 0;
+            for(int i = 1;s[i]!='\0';i++){
+                if(!isdigit(s[i]) && s[i] != '.'){
+                    flag = false;
+                }
+                if(s[i] == '.')
+                    cnt++;
+            }
+
+            if(flag == true && cnt == 0)
+            cout << s << " : decimal" << endl;
+            else if(flag == 1 && cnt == 1)
+            cout << s << " : Float" << endl;
+            else
+            cout << "Invalid" << endl;
+        }
+        else
+            cout << "Invalid" << endl;
+    }
+
+    return 0;
+}
+
+
+
+question-9
+
+/*
+Write a program that will check an English sentence given in present indefinite form 
+to justify whether it is syntactically valid or invalid according to the following Chomsky 
+Normal Form: 
+S -> SUB PRED 
+SUB -> PN | P 
+PRED -> V | V N 
+PN -> Sagor | Selim | Salma | Nipu 
+P -> he | she | i | we | you | they 
+N -> book | cow | dog | home | grass | rice | mango 
+V -> read | eat | take | run | write
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    set<string>pn = {"Sagor", "Selim", "Salma", "Nipu"};
+    set<string>p = {"he", "she", "I", "we", "you", "they"};
+    set<string>n = {"book", "cow", "dog", "home", "grass", "rice", "mango"};
+    set<string>v = {"read", "eat", "take", "run", "write"};
+
+    freopen("9.txt", "r", stdin);
+    string sentence;
+    while(getline(cin, sentence))
+    {
+        vector<string>words;
+        string temp="";
+
+        for(int i=0; sentence[i]; i++)
+        {
+            if(sentence[i]==' ')
+            {
+                words.push_back(temp);
+                temp="";
+            }
+            else
+            {
+                temp = temp+sentence[i];
+            }
+        }
+        words.push_back(temp);
+        if(words.size() >3 || words.size()<2)
+        {
+            cout<<sentence<<" : Invalid Input"<<endl;
+            break;
+        }
+        bool isValid=true;
+        if(!pn.count(words[0]) && !p.count(words[0]))
+            isValid=false;
+        if(!v.count(words[1]))
+            isValid=false;
+        if(words.size()>2 && !n.count(words[2]))
+            isValid=false;
+
+        if(isValid)
+        {
+            cout<<sentence<<" : Valid"<<endl;
+        }
+        else
+        {
+            cout<<sentence<<" : Invalid"<<endl;
+        }
+    }
+    return 0;
+}
+
+//sample input : output
+Nipu read book : Valid
+Nipu read book. : Invalid
+nipu read book : Invalid
+Salma take mango : Valid
+I eat grass : Valid
+cow eat grass : Invalid
+Selim run : Valid
+we read book : Valid
+read book : Invalid
+Sagor mango eat : Invalid
+
+
+
+
+
+
+question-10
+
+/*
+Write a program to implement a shift reducing parsing.
+*/
+
+ #include <bits/stdc++.h>
+using namespace std;
+
+void shift(string stk, string input){
+    cout << stk << "\t\t" << input << "\t\t" << "Shift" << endl;
+}
+
+void reduce_to(string stk, string input, char a, char b){
+    cout << stk << "\t\t" << input << "\t\t" << a << "->" << b << endl;
+}
+
+int main()
+{
+    freopen("10.txt", "r", stdin);
+    int n;
+    cout << "Enter the number of Rule : ";
+    cin >> n;
+    cin.ignore();
+
+    string g_left[n], g_right[n];
+
+    cout << "Enter the Rules :" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        string temp;
+        getline(cin, temp);
+        g_left[i].push_back(temp[0]);
+        for (int j = 3; j<temp.size(); j++)
+        {
+            g_right[i].push_back(temp[j]);
+        }
+    }
+
+    cout << "Find Grammer" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cout << g_left[i] << "->" << g_right[i] << endl;
+    }
+
+    string input;
+    cin >> input;
+    string stk = "$";
+
+    input.push_back('$');
+
+    while (input != "$"){
+        stk.push_back(input[0]);
+        input.erase(input.begin());
+        shift(stk, input);
+
+        for(int i = 0;i<n;i++){
+            bool reduce = false;
+            if(stk.find(g_right[i]) < stk.length()){
+                 stk.erase(stk.find(g_right[i]), stk.length());
+                 stk += g_left[i];
+                 reduce_to(stk, input, g_left[i][0], g_right[i][0]);
+                 reduce = true;
+            }
+             if(reduce) i = -1;
+        }
+    }
+    input += g_left[0];
+    if(stk == input)
+    cout << "Accepted" << endl;
+    else
+    cout << "Rejected" << endl;
+
+
+    return 0;
+}
+
+//(
+4
+E->E+E
+E->E*E
+E->(E)
+E->a
+a+a*(a+a)+a
+
+)
+//sample input : output
+Enter the number of Rule : Enter the Rules :
+Find Grammer
+E->E+E
+E->E*E
+E->(E)
+E->a
+$a              +a*(a+a)+a$             Shift
+$E              +a*(a+a)+a$             E->a
+$E+             a*(a+a)+a$              Shift
+$E+a            *(a+a)+a$               Shift
+$E+E            *(a+a)+a$               E->a
+$E              *(a+a)+a$               E->E
+$E*             (a+a)+a$                Shift
+$E*(            a+a)+a$         Shift
+$E*(a           +a)+a$          Shift
+$E*(E           +a)+a$          E->a
+$E*(E+          a)+a$           Shift
+$E*(E+a         )+a$            Shift
+$E*(E+E         )+a$            E->a
+$E*(E           )+a$            E->E
+$E*(E)          +a$             Shift
+$E*E            +a$             E->(
+$E              +a$             E->E
+$E+             a$              Shift
+$E+a            $               Shift
+$E+E            $               E->a
+$E              $               E->E
+Accepted
 
